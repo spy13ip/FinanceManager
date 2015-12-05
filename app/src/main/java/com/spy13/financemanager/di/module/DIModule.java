@@ -13,6 +13,7 @@ import com.spy13.financemanager.models.services.CurrencyService;
 import com.spy13.financemanager.models.services.ICurrencyService;
 import com.spy13.financemanager.models.services.IPurseService;
 import com.spy13.financemanager.models.services.PurseService;
+import com.spy13.financemanager.presenters.PurseListPresenter;
 
 import java.sql.SQLException;
 

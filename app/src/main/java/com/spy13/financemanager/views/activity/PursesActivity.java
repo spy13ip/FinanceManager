@@ -1,17 +1,18 @@
 package com.spy13.financemanager.views.activity;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.spy13.financemanager.Common;
 import com.spy13.financemanager.R;
 import com.spy13.financemanager.models.entities.Purse;
-import com.spy13.financemanager.views.IPursesView;
 import com.spy13.financemanager.views.ShowPurseListener;
 import com.spy13.financemanager.views.fragment.PurseListFragment;
 
-public class PursesActivity extends Activity implements IPursesView, ShowPurseListener {
+public class PursesActivity extends InjectionActivityBase implements ShowPurseListener {
 
     public PursesActivity() {
         Common.log(this, "PursesActivity");
@@ -22,7 +23,16 @@ public class PursesActivity extends Activity implements IPursesView, ShowPurseLi
         Common.log(this, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.purses_activity);
-        PurseListFragment purseListFragment = (PurseListFragment)getFragmentManager().findFragmentById(R.id.pursesActivity_purseList);
+        PurseListFragment purseListFragment;
+        if (savedInstanceState == null) {
+            FragmentManager manager = getFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.pursesActivity_purseList, purseListFragment = PurseListFragment.createInstance());
+            transaction.commit();
+        }
+        else {
+            purseListFragment = (PurseListFragment)getFragmentManager().findFragmentById(R.id.purseListFragment);
+        }
         purseListFragment.setShowPurseListener(this);
     }
 
@@ -30,7 +40,7 @@ public class PursesActivity extends Activity implements IPursesView, ShowPurseLi
     public void showPurse(Purse purse) {
         Common.log(this, "showPurse");
         Intent intent = new Intent(this, PurseActivity.class);
-        PurseActivity.args(intent, purse.getId());
+        PurseActivity.createIntent(intent, purse.getId());
         startActivity(intent);
     }
 }

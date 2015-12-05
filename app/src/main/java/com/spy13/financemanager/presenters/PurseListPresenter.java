@@ -1,8 +1,7 @@
 package com.spy13.financemanager.presenters;
 
-import android.os.AsyncTask;
-
 import com.spy13.financemanager.Common;
+import com.spy13.financemanager.MyTask;
 import com.spy13.financemanager.models.entities.Purse;
 import com.spy13.financemanager.models.services.IPurseService;
 import com.spy13.financemanager.views.IPurseListView;
@@ -11,10 +10,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class PurseListPresenter extends PresenterBase<IPurseListView> {
+public class PurseListPresenter extends FragmentPresenterBase<IPurseListView> {
     private IPurseService purseService;
-
-    private boolean isWorking;
 
     private List<Purse> purseList;
     private boolean purseListLoading;
@@ -27,28 +24,25 @@ public class PurseListPresenter extends PresenterBase<IPurseListView> {
         this.purseService = purseService;
     }
 
+    @Override
     public void onCreate() {
-        Common.log(this, "onCreate");
+        super.onCreate();
         purseListLoadTask = new PurseListLoadTask();
-        purseListLoadTask.execute();
+        purseListLoadTask.run(null);
     }
 
+    @Override
     public void onCreateView() {
-        Common.log(this, "onCreateView");
-        isWorking = true;
+        super.onCreateView();
         if (purseList != null)
             getView().setPurseList(purseList);
         if (purseListLoading)
             getView().purseListProgressStart();
     }
 
-    public void onDestroyView() {
-        Common.log(this, "onDestroyView");
-        isWorking = false;
-    }
-
+    @Override
     public void onDestroy() {
-        Common.log(this, "onDestroy");
+        super.onDestroy();
         if(purseListLoadTask != null)
             purseListLoadTask.cancel(true);
     }
@@ -58,49 +52,36 @@ public class PurseListPresenter extends PresenterBase<IPurseListView> {
         getView().showPurse(purse);
     }
 
-    private class PurseListLoadTask extends AsyncTask<Void, Void, List<Purse>> {
+    private class PurseListLoadTask extends MyTask<Void, Void, List<Purse>> {
         @Override
-        protected void onPreExecute() {
-            Common.log(this, "onPreExecute");
-            super.onPreExecute();
+        protected void onBefore() {
+            Common.log(this, "onBefore");
             purseListLoading = true;
-            if (!isWorking) return;
+            if (!isWorking()) return;
             getView().purseListProgressStart();
         }
 
         @Override
-        protected List<Purse> doInBackground(Void... params) {
+        protected List<Purse> onBody(Void param) {
             Common.log(this, "doInBackground");
             try {
                 Thread.sleep(5000);
                 if (isCancelled()) return null;
-                List<Purse> result = purseService.get();
-                return result;
+                return purseService.get();
             } catch (InterruptedException e) {
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(List<Purse> result) {
-            Common.log(this, "onPostExecute");
-            super.onPostExecute(result);
+        protected void onAfter(List<Purse> result, boolean isCanceled) {
+            Common.log(this, "onAfter");
             purseListLoadTask = null;
             purseListLoading = false;
-            purseList = result;
-            if (!isWorking) return;
+            if (!isCanceled) purseList = result;
+            if (!isWorking()) return;
             getView().purseListProgressEnd();
-            getView().setPurseList(purseList);
-        }
-
-        @Override
-        protected void onCancelled() {
-            Common.log(this, "onCancelled");
-            super.onCancelled();
-            purseListLoadTask = null;
-            purseListLoading = false;
-            if (!isWorking) return;
-            getView().purseListProgressEnd();
+            if (!isCanceled) getView().setPurseList(purseList);
         }
     }
 }

@@ -5,10 +5,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <fragment
+
+    <FrameLayout
         android:id="@+id/pursesActivity_purseList"
-        android:name="com.spy13.financemanager.views.fragment.PurseListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </fragment>
+    </FrameLayout>
 </LinearLayout>

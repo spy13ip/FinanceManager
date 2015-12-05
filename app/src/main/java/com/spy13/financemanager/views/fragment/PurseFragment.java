@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.spy13.financemanager.Common;
 import com.spy13.financemanager.FinanceManagerApplication;
+import com.spy13.financemanager.InjectorProvider;
 import com.spy13.financemanager.R;
 import com.spy13.financemanager.models.entities.Purse;
 import com.spy13.financemanager.presenters.PursePresenter;
@@ -17,20 +18,19 @@ import com.spy13.financemanager.views.IPurseView;
 
 import javax.inject.Inject;
 
-/**
- * Created by spy13 on 22.11.2015.
- */
 public class PurseFragment extends Fragment implements IPurseView {
     @Inject
     PursePresenter pursePresenter;
 
+    //Arguments
     private int purseId;
 
+    //Views
     private TextView purseNameView;
     private TextView currencyCodeView;
     private TextView currencyNameView;
 
-    public static PurseFragment newInstance(int purseId) {
+    public static PurseFragment createInstance(int purseId) {
         PurseFragment fragment = new PurseFragment();
         Bundle args = new Bundle();
         args.putInt("purseId", purseId);
@@ -38,21 +38,22 @@ public class PurseFragment extends Fragment implements IPurseView {
         return fragment;
     }
 
-    private void init() {
+    private void initArguments() {
         purseId = getArguments().getInt("purseId");
     }
 
     public PurseFragment(){
         Common.log(this, "PurseFragment");
+        setRetainInstance(true);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Common.log(this, "onCreate");
         super.onCreate(savedInstanceState);
-        init();
-        ((FinanceManagerApplication) getActivity().getApplication()).getDiComponent().inject(this);
+        ((InjectorProvider)getActivity()).getInjector().inject(this);
         pursePresenter.setView(this);
+        initArguments();
     }
 
     @Override

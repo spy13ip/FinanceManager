@@ -18,6 +18,10 @@ public class PursePresenter extends PresenterBase<IPurseView> {
         this.purseService = purseService;
     }
 
+    public void onCreate() {
+        Common.log(this, "init");
+    }
+
     public void init(int purseId){
         Common.log(this, "init");
         purse = purseService.getById(purseId);

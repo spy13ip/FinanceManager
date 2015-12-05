@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.spy13.financemanager.Common;
 import com.spy13.financemanager.FinanceManagerApplication;
+import com.spy13.financemanager.InjectorProvider;
 import com.spy13.financemanager.R;
 import com.spy13.financemanager.models.entities.Purse;
 import com.spy13.financemanager.presenters.PurseListPresenter;
@@ -26,23 +27,29 @@ public class PurseListFragment extends Fragment implements IPurseListView {
     @Inject
     PurseListPresenter presenter;
 
+    //Listeners
     private ShowPurseListener showPurseListener;
 
+    //Views
     private ListView purseListView;
     private PurseListItemAdapter purseListItemAdapter;
     private ProgressBar purseListProgressView;
 
+    public static PurseListFragment createInstance() {
+        return new PurseListFragment();
+    }
+
     public PurseListFragment() {
         Common.log(this, "PurseListFragment");
+        setRetainInstance(true);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Common.log(this, "onCreate");
         super.onCreate(savedInstanceState);
-        ((FinanceManagerApplication) getActivity().getApplication()).getDiComponent().inject(this);
+        ((InjectorProvider)getActivity()).getInjector().inject(this);
         presenter.setView(this);
-        setRetainInstance(true);
         presenter.onCreate();
     }
 
