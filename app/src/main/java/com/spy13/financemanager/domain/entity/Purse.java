@@ -1,4 +1,4 @@
-package com.spy13.financemanager.models.entities;
+package com.spy13.financemanager.domain.entity;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

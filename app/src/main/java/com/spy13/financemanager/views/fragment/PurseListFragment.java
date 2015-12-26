@@ -10,10 +10,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.spy13.financemanager.Common;
-import com.spy13.financemanager.FinanceManagerApplication;
-import com.spy13.financemanager.InjectorProvider;
+import com.spy13.financemanager.injection.InjectorProvider;
 import com.spy13.financemanager.R;
-import com.spy13.financemanager.models.entities.Purse;
+import com.spy13.financemanager.domain.entity.Purse;
 import com.spy13.financemanager.presenters.PurseListPresenter;
 import com.spy13.financemanager.views.IPurseListView;
 import com.spy13.financemanager.views.ShowPurseListener;

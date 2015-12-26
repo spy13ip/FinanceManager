@@ -10,7 +10,12 @@ import com.spy13.financemanager.R;
 import com.spy13.financemanager.views.fragment.PurseFragment;
 
 public class PurseActivity extends InjectionActivityBase {
+    //Arguments
     private int purseId;
+
+    //Fragments
+    private static final String PURSE_FRAGMENT_TAG = "PurseFragment";
+    private PurseFragment purseFragment;
 
     public static Intent createIntent(Intent intent, int purseId){
         intent.putExtra("purseId", purseId);
@@ -34,9 +39,9 @@ public class PurseActivity extends InjectionActivityBase {
         if (savedInstanceState == null) {
             FragmentManager manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.purseActivity_Purse, PurseFragment.createInstance(purseId));
+            transaction.add(R.id.purseActivity_Purse, PurseFragment.createInstance(purseId), PURSE_FRAGMENT_TAG);
             transaction.commit();
         }
+        purseFragment = (PurseFragment) getFragmentManager().findFragmentByTag(PURSE_FRAGMENT_TAG);
     }
-
 }

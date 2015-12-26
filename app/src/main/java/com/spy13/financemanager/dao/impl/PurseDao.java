@@ -1,19 +1,19 @@
-package com.spy13.financemanager.models.services;
+package com.spy13.financemanager.dao.impl;
 
 import com.j256.ormlite.dao.Dao;
-import com.spy13.financemanager.models.entities.Currency;
-import com.spy13.financemanager.models.entities.Purse;
+import com.spy13.financemanager.dao.IPurseDao;
+import com.spy13.financemanager.domain.entity.Purse;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class PurseService implements IPurseService {
+public class PurseDao implements IPurseDao {
     private Dao<Purse, Integer> purseDao;
 
     @Inject
-    public PurseService(Dao<Purse, Integer> purseDao) {
+    public PurseDao(Dao<Purse, Integer> purseDao) {
         this.purseDao = purseDao;
     }
 

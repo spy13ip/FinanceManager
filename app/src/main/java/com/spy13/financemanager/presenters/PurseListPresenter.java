@@ -2,8 +2,8 @@ package com.spy13.financemanager.presenters;
 
 import com.spy13.financemanager.Common;
 import com.spy13.financemanager.MyTask;
-import com.spy13.financemanager.models.entities.Purse;
-import com.spy13.financemanager.models.services.IPurseService;
+import com.spy13.financemanager.domain.entity.Purse;
+import com.spy13.financemanager.dao.IPurseDao;
 import com.spy13.financemanager.views.IPurseListView;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class PurseListPresenter extends FragmentPresenterBase<IPurseListView> {
-    private IPurseService purseService;
+    private IPurseDao purseService;
 
     private List<Purse> purseList;
     private boolean purseListLoading;
@@ -19,7 +19,7 @@ public class PurseListPresenter extends FragmentPresenterBase<IPurseListView> {
     private PurseListLoadTask purseListLoadTask;
 
     @Inject
-    public PurseListPresenter(IPurseService purseService) {
+    public PurseListPresenter(IPurseDao purseService) {
         Common.log(this, "PurseListPresenter");
         this.purseService = purseService;
     }

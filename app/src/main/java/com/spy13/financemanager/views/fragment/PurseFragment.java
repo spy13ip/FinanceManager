@@ -2,17 +2,15 @@ package com.spy13.financemanager.views.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.spy13.financemanager.Common;
-import com.spy13.financemanager.FinanceManagerApplication;
-import com.spy13.financemanager.InjectorProvider;
+import com.spy13.financemanager.injection.InjectorProvider;
 import com.spy13.financemanager.R;
-import com.spy13.financemanager.models.entities.Purse;
+import com.spy13.financemanager.domain.entity.Purse;
 import com.spy13.financemanager.presenters.PursePresenter;
 import com.spy13.financemanager.views.IPurseView;
 
@@ -20,7 +18,7 @@ import javax.inject.Inject;
 
 public class PurseFragment extends Fragment implements IPurseView {
     @Inject
-    PursePresenter pursePresenter;
+    PursePresenter presenter;
 
     //Arguments
     private int purseId;
@@ -51,9 +49,11 @@ public class PurseFragment extends Fragment implements IPurseView {
     public void onCreate(Bundle savedInstanceState) {
         Common.log(this, "onCreate");
         super.onCreate(savedInstanceState);
-        ((InjectorProvider)getActivity()).getInjector().inject(this);
-        pursePresenter.setView(this);
         initArguments();
+        ((InjectorProvider)getActivity()).getInjector().inject(this);
+        presenter.setView(this);
+        presenter.initArguments(purseId);
+        presenter.onCreate();
     }
 
     @Override
@@ -63,13 +63,27 @@ public class PurseFragment extends Fragment implements IPurseView {
         purseNameView = (TextView) view.findViewById(R.id.purseFragment_purseName);
         currencyCodeView = (TextView) view.findViewById(R.id.purseFragment_currencyCode);
         currencyNameView = (TextView) view.findViewById(R.id.purseFragment_currencyName);
-        pursePresenter.init(purseId);
+        presenter.onCreateView();
         return view;
     }
 
     @Override
+    public void onDestroyView() {
+        Common.log(this, "onDestroyView");
+        super.onDestroyView();
+        presenter.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        Common.log(this, "onDestroy");
+        super.onDestroy();
+        presenter.onDestroy();
+    }
+
+    @Override
     public void setPurse(Purse purse) {
-        Common.log(this, "onClickPurse");
+        Common.log(this, "setPurse");
         purseNameView.setText(purse.getName());
         currencyCodeView.setText(purse.getCurrency().getCode());
         currencyNameView.setText(purse.getCurrency().getName());

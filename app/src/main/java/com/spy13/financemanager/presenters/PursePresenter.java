@@ -1,30 +1,34 @@
 package com.spy13.financemanager.presenters;
 
 import com.spy13.financemanager.Common;
-import com.spy13.financemanager.models.entities.Purse;
-import com.spy13.financemanager.models.services.PurseService;
+import com.spy13.financemanager.domain.entity.Purse;
+import com.spy13.financemanager.dao.impl.PurseDao;
 import com.spy13.financemanager.views.IPurseView;
 
 import javax.inject.Inject;
 
-public class PursePresenter extends PresenterBase<IPurseView> {
-    private PurseService purseService;
+public class PursePresenter extends FragmentPresenterBase<IPurseView> {
+    private PurseDao purseService;
+
+    private int purseId;
 
     private Purse purse;
 
     @Inject
-    public PursePresenter(PurseService purseService) {
+    public PursePresenter(PurseDao purseService) {
         Common.log(this, "PursePresenter");
         this.purseService = purseService;
     }
 
-    public void onCreate() {
-        Common.log(this, "init");
+    public void initArguments(int purseId){
+        Common.log(this, "initArguments");
+        this.purseId = purseId;
     }
 
-    public void init(int purseId){
-        Common.log(this, "init");
+    @Override
+    public void onCreate() {
         purse = purseService.getById(purseId);
         getView().setPurse(purse);
     }
+
 }

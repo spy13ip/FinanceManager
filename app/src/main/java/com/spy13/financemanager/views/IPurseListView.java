@@ -1,6 +1,6 @@
 package com.spy13.financemanager.views;
 
-import com.spy13.financemanager.models.entities.Purse;
+import com.spy13.financemanager.domain.entity.Purse;
 
 import java.util.List;
 

@@ -2,9 +2,10 @@ package com.spy13.financemanager;
 
 import android.app.Application;
 
-import com.spy13.financemanager.di.component.DIComponent;
-import com.spy13.financemanager.di.component.DaggerDIComponent;
-import com.spy13.financemanager.di.module.DIModule;
+import com.spy13.financemanager.injection.DIComponent;
+import com.spy13.financemanager.injection.DaggerDIComponent;
+import com.spy13.financemanager.injection.InjectorProvider;
+import com.spy13.financemanager.injection.DIModule;
 
 public class FinanceManagerApplication extends Application implements InjectorProvider {
     private DIComponent injector;

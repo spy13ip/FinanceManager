@@ -1,6 +1,5 @@
-package com.spy13.financemanager.di.component;
+package com.spy13.financemanager.injection;
 
-import com.spy13.financemanager.di.module.DIModule;
 import com.spy13.financemanager.views.fragment.PurseFragment;
 import com.spy13.financemanager.views.fragment.PurseListFragment;
 

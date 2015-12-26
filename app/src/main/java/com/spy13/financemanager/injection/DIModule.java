@@ -1,4 +1,4 @@
-package com.spy13.financemanager.di.module;
+package com.spy13.financemanager.injection;
 
 import android.app.Application;
 
@@ -6,14 +6,13 @@ import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
-import com.spy13.financemanager.models.data.DBHelper;
-import com.spy13.financemanager.models.entities.Currency;
-import com.spy13.financemanager.models.entities.Purse;
-import com.spy13.financemanager.models.services.CurrencyService;
-import com.spy13.financemanager.models.services.ICurrencyService;
-import com.spy13.financemanager.models.services.IPurseService;
-import com.spy13.financemanager.models.services.PurseService;
-import com.spy13.financemanager.presenters.PurseListPresenter;
+import com.spy13.financemanager.dao.helper.DBHelper;
+import com.spy13.financemanager.domain.entity.Currency;
+import com.spy13.financemanager.domain.entity.Purse;
+import com.spy13.financemanager.dao.impl.CurrencyDao;
+import com.spy13.financemanager.dao.ICurrencyDao;
+import com.spy13.financemanager.dao.IPurseDao;
+import com.spy13.financemanager.dao.impl.PurseDao;
 
 import java.sql.SQLException;
 
@@ -44,7 +43,7 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public Dao<Currency, Integer> provideCurrencyDao (ConnectionSource connectionSource) {
+    public Dao<Currency, Integer> provideOrmCurrencyDao (ConnectionSource connectionSource) {
         try {
             return DaoManager.createDao(connectionSource, Currency.class);
         } catch (SQLException e) {
@@ -54,7 +53,7 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public Dao<Purse, Integer> providePurseDao (ConnectionSource connectionSource) {
+    public Dao<Purse, Integer> provideOrmPurseDao (ConnectionSource connectionSource) {
         try {
             return DaoManager.createDao(connectionSource, Purse.class);
         } catch (SQLException e) {
@@ -64,13 +63,13 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public ICurrencyService provideCurrencyService(Dao<Currency, Integer> currencyDao) {
-        return new CurrencyService(currencyDao);
+    public ICurrencyDao provideCurrencyDao(Dao<Currency, Integer> currencyDao) {
+        return new CurrencyDao(currencyDao);
     }
 
     @Provides
     @Singleton
-    public IPurseService providePurseService(Dao<Purse, Integer> purseDao) {
-        return new PurseService(purseDao);
+    public IPurseDao providePurseDao(Dao<Purse, Integer> purseDao) {
+        return new PurseDao(purseDao);
     }
 }

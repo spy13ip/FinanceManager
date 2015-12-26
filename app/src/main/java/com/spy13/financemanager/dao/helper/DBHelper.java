@@ -1,4 +1,4 @@
-package com.spy13.financemanager.models.data;
+package com.spy13.financemanager.dao.helper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

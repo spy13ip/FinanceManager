@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.spy13.financemanager.R;
-import com.spy13.financemanager.models.entities.Purse;
+import com.spy13.financemanager.domain.entity.Purse;
 
 import java.util.List;
 
