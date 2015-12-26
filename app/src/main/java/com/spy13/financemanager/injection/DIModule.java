@@ -43,7 +43,7 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public Dao<Currency, Integer> provideOrmCurrencyDao (ConnectionSource connectionSource) {
+    public Dao<Currency, Integer> provideCurrencyDaoInternal (ConnectionSource connectionSource) {
         try {
             return DaoManager.createDao(connectionSource, Currency.class);
         } catch (SQLException e) {
@@ -53,7 +53,7 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public Dao<Purse, Integer> provideOrmPurseDao (ConnectionSource connectionSource) {
+    public Dao<Purse, Integer> providePurseDaoInternal (ConnectionSource connectionSource) {
         try {
             return DaoManager.createDao(connectionSource, Purse.class);
         } catch (SQLException e) {

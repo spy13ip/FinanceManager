@@ -1,6 +1,7 @@
 package com.spy13.financemanager.dao.impl;
 
 import com.j256.ormlite.dao.Dao;
+import com.spy13.financemanager.dao.DaoException;
 import com.spy13.financemanager.dao.IPurseDao;
 import com.spy13.financemanager.domain.entity.Purse;
 
@@ -18,20 +19,42 @@ public class PurseDao implements IPurseDao {
     }
 
     @Override
-    public List<Purse> get() {
+    public List<Purse> get() throws DaoException {
         try {
             return purseDao.queryForAll();
         } catch (SQLException e) {
-            return null;
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Purse getById(int id) {
+    public Purse getById(int id) throws DaoException {
         try {
             return purseDao.queryForId(id);
         } catch (SQLException e) {
-            return null;
+            throw new DaoException(e);
         }
+    }
+
+    @Override
+    public void update(Purse purse) throws DaoException {
+        try {
+            if (purseDao.update(purse) != 1)
+                throw DaoException.rowNumberIsNot1();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
+    }
+
+    @Override
+    public Purse create(Purse purse) throws DaoException {
+        try {
+            if (purseDao.create(purse) != 1)
+                throw DaoException.rowNumberIsNot1();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return purse;
     }
 }

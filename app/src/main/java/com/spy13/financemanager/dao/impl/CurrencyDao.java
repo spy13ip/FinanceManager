@@ -1,6 +1,7 @@
 package com.spy13.financemanager.dao.impl;
 
 import com.j256.ormlite.dao.Dao;
+import com.spy13.financemanager.dao.DaoException;
 import com.spy13.financemanager.dao.ICurrencyDao;
 import com.spy13.financemanager.domain.entity.Currency;
 
@@ -19,20 +20,41 @@ public class CurrencyDao implements ICurrencyDao {
     }
 
     @Override
-    public List<Currency> get() {
+    public List<Currency> get() throws DaoException {
         try {
             return currencyDao.queryForAll();
         } catch (SQLException e) {
-            return null;
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Currency getById(int id) {
+    public Currency getById(int id) throws DaoException {
         try {
             return currencyDao.queryForId(id);
         } catch (SQLException e) {
-            return null;
+            throw new DaoException(e);
         }
+    }
+
+    @Override
+    public void update(Currency currency) throws DaoException {
+        try {
+            if (currencyDao.update(currency) != 1)
+                throw DaoException.rowNumberIsNot1();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Currency create(Currency currency) throws DaoException {
+        try {
+            if (currencyDao.create(currency) != 1)
+                throw DaoException.rowNumberIsNot1();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return currency;
     }
 }
