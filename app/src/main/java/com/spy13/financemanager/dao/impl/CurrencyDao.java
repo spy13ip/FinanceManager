@@ -1,8 +1,8 @@
 package com.spy13.financemanager.dao.impl;
 
-import com.j256.ormlite.dao.Dao;
 import com.spy13.financemanager.dao.DaoException;
 import com.spy13.financemanager.dao.ICurrencyDao;
+import com.spy13.financemanager.dao.ormlite.CurrencyOrmliteDao;
 import com.spy13.financemanager.domain.entity.Currency;
 
 import java.sql.SQLException;
@@ -11,11 +11,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class CurrencyDao implements ICurrencyDao {
-    private Dao<Currency, Integer> currencyDao;
+    private CurrencyOrmliteDao currencyDao;
 
     @Inject
-    public CurrencyDao(Dao<Currency, Integer> currencyDao) {
-
+    public CurrencyDao(CurrencyOrmliteDao currencyDao) {
         this.currencyDao = currencyDao;
     }
 

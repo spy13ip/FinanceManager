@@ -1,6 +1,7 @@
 package com.spy13.financemanager.presenters;
 
 import com.spy13.financemanager.Common;
+import com.spy13.financemanager.dao.DaoException;
 import com.spy13.financemanager.domain.entity.Purse;
 import com.spy13.financemanager.dao.impl.PurseDao;
 import com.spy13.financemanager.views.IPurseView;
@@ -27,7 +28,11 @@ public class PursePresenter extends FragmentPresenterBase<IPurseView> {
 
     @Override
     public void onCreate() {
-        purse = purseService.getById(purseId);
+        try {
+            purse = purseService.getById(purseId);
+        } catch (DaoException e) {
+            purse = null;
+        }
         getView().setPurse(purse);
     }
 

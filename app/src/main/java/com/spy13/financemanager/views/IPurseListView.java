@@ -5,9 +5,11 @@ import com.spy13.financemanager.domain.entity.Purse;
 import java.util.List;
 
 public interface IPurseListView {
-    void setPurseList(List<Purse> purseList);
-    void purseListChanged();
-    void purseListProgressStart();
-    void purseListProgressEnd();
+    void progressVisible(boolean value);
+    void progressWait(boolean value);
+    void progressErrorVisible(boolean value);
+    void progressCanceledVisible(boolean value);
+    void nothingDataVisible(boolean value);
+    void setPurses(List<Purse> purses);
     void showPurse(Purse purse);
 }

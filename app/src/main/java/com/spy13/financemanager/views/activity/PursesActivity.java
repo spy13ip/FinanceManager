@@ -32,8 +32,14 @@ public class PursesActivity extends InjectionActivityBase implements ShowPurseLi
             transaction.commit();
         }
         getFragmentManager().executePendingTransactions();
-        purseListFragment = (PurseListFragment)getFragmentManager().findFragmentByTag(PURSE_LIST_FRAGMENT_TAG);
+        purseListFragment = (PurseListFragment) getFragmentManager().findFragmentByTag(PURSE_LIST_FRAGMENT_TAG);
         purseListFragment.setShowPurseListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (purseListFragment.allowBackPressed())
+            super.onBackPressed();
     }
 
     @Override

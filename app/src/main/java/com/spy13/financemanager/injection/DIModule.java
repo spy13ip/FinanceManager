@@ -7,6 +7,8 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.spy13.financemanager.dao.helper.DBHelper;
+import com.spy13.financemanager.dao.ormlite.CurrencyOrmliteDao;
+import com.spy13.financemanager.dao.ormlite.PurseOrmliteDao;
 import com.spy13.financemanager.domain.entity.Currency;
 import com.spy13.financemanager.domain.entity.Purse;
 import com.spy13.financemanager.dao.impl.CurrencyDao;
@@ -43,9 +45,9 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public Dao<Currency, Integer> provideCurrencyDaoInternal (ConnectionSource connectionSource) {
+    public CurrencyOrmliteDao provideCurrencyOrmliteDao (ConnectionSource connectionSource) {
         try {
-            return DaoManager.createDao(connectionSource, Currency.class);
+            return new CurrencyOrmliteDao(connectionSource);
         } catch (SQLException e) {
             return null;
         }
@@ -53,9 +55,9 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public Dao<Purse, Integer> providePurseDaoInternal (ConnectionSource connectionSource) {
+    public PurseOrmliteDao providePurseDaoInternal (ConnectionSource connectionSource) {
         try {
-            return DaoManager.createDao(connectionSource, Purse.class);
+            return new PurseOrmliteDao(connectionSource);
         } catch (SQLException e) {
             return null;
         }
@@ -63,13 +65,13 @@ public class DIModule {
 
     @Provides
     @Singleton
-    public ICurrencyDao provideCurrencyDao(Dao<Currency, Integer> currencyDao) {
+    public ICurrencyDao provideCurrencyDao(CurrencyOrmliteDao currencyDao) {
         return new CurrencyDao(currencyDao);
     }
 
     @Provides
     @Singleton
-    public IPurseDao providePurseDao(Dao<Purse, Integer> purseDao) {
+    public IPurseDao providePurseDao(PurseOrmliteDao purseDao) {
         return new PurseDao(purseDao);
     }
 }

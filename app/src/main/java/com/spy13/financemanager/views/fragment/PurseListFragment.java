@@ -10,9 +10,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.spy13.financemanager.Common;
-import com.spy13.financemanager.injection.InjectorProvider;
 import com.spy13.financemanager.R;
 import com.spy13.financemanager.domain.entity.Purse;
+import com.spy13.financemanager.injection.InjectorProvider;
 import com.spy13.financemanager.presenters.PurseListPresenter;
 import com.spy13.financemanager.views.IPurseListView;
 import com.spy13.financemanager.views.ShowPurseListener;
@@ -34,27 +34,25 @@ public class PurseListFragment extends Fragment implements IPurseListView {
     private PurseListItemAdapter purseListItemAdapter;
     private ProgressBar purseListProgressView;
 
+    public PurseListFragment() {
+        setRetainInstance(true);
+    }
+
     public static PurseListFragment createInstance() {
         return new PurseListFragment();
     }
 
-    public PurseListFragment() {
-        Common.log(this, "PurseListFragment");
-        setRetainInstance(true);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Common.log(this, "onCreate");
         super.onCreate(savedInstanceState);
-        ((InjectorProvider)getActivity()).getInjector().inject(this);
+        ((InjectorProvider) getActivity()).getInjector().inject(this);
         presenter.setView(this);
         presenter.onCreate();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Common.log(this, "onCreateView");
+        super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.purse_list_fragment, container, false);
         purseListView = (ListView) view.findViewById(R.id.purseListFragment_purseList);
         purseListProgressView = (ProgressBar) view.findViewById(R.id.purseListFragment_purseListProgress);
@@ -71,41 +69,45 @@ public class PurseListFragment extends Fragment implements IPurseListView {
 
     @Override
     public void onDestroyView() {
-        Common.log(this, "onDestroyView");
         super.onDestroyView();
         presenter.onDestroyView();
     }
 
     @Override
     public void onDestroy() {
-        Common.log(this, "onDestroy");
         super.onDestroy();
         presenter.onDestroy();
     }
 
     @Override
-    public void setPurseList(List<Purse> purseList) {
-        Common.log(this, "setPurseList");
-        purseListItemAdapter = new PurseListItemAdapter(getActivity().getLayoutInflater(), purseList);
+    public void progressVisible(boolean value) {
+        purseListProgressView.setVisibility(value ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void progressWait(boolean value) {
+    }
+
+    @Override
+    public void progressErrorVisible(boolean value) {
+
+    }
+
+    @Override
+    public void progressCanceledVisible(boolean value) {
+
+    }
+
+    @Override
+    public void nothingDataVisible(boolean value) {
+
+    }
+
+    @Override
+    public void setPurses(List<Purse> purses) {
+        purseListItemAdapter = new PurseListItemAdapter(getActivity().getLayoutInflater(), purses);
         purseListView.setAdapter(purseListItemAdapter);
-    }
-
-    @Override
-    public void purseListChanged() {
-        Common.log(this, "purseListChanged");
-        purseListItemAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void purseListProgressStart() {
-        Common.log(this, "purseListProgressStart");
-        purseListProgressView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void purseListProgressEnd() {
-        Common.log(this, "purseListProgressEnd");
-        purseListProgressView.setVisibility(View.GONE);
+//        purseListItemAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -118,5 +120,7 @@ public class PurseListFragment extends Fragment implements IPurseListView {
         this.showPurseListener = showPurseListener;
     }
 
-
+    public boolean allowBackPressed() {
+        return presenter.allowBackPressed();
+    }
 }

@@ -1,8 +1,6 @@
 package com.spy13.financemanager.domain.entity;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "currency")
@@ -13,8 +11,6 @@ public class Currency {
     private String code;
     @DatabaseField(columnName = "name")
     private String name;
-    @ForeignCollectionField
-    private ForeignCollection<Purse> purses;
 
     public int getId() {
         return id;
@@ -38,13 +34,5 @@ public class Currency {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ForeignCollection<Purse> getPurses() {
-        return purses;
-    }
-
-    public void setPurses(ForeignCollection<Purse> purses) {
-        this.purses = purses;
     }
 }
